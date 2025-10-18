@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PitchCraft AI - Professional Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #10a37f;
+        --primary-dark: #0d8a6c;
+        --primary-light: rgba(16, 163, 127, 0.1);
+        --sidebar-bg: #1a1b26;
+        --main-bg: #24283b;
+        --message-user-bg: #24283b;
+        --message-ai-bg: #2a2e3f;
+        --text-primary: #c0caf5;
+        --text-secondary: #a9b1d6;
+        --text-muted: #565f89;
+        --border-color: #414868;
+        --hover-color: #292e42;
+        --card-bg: rgba(30, 31, 41, 0.8);
+        --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, var(--main-bg) 0%, #1a1b26 100%);
+        color: var(--text-primary);
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+        line-height: 1.6;
+      }
+
+      /* Menu Toggle */
+      .menu-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius-sm);
+        width: 44px;
+        height: 44px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 1001;
+        transition: var(--transition);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+      }
+
+      .menu-toggle:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 280px;
+        background: var(--sidebar-bg);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        transition: var(--transition);
+        overflow: hidden;
+        border-right: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+      }
+
+      .sidebar-header {
+        padding: 24px 20px 16px;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 20px;
+      }
+
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        background: linear-gradient(135deg, var(--primary) 0%, #6ee7b7 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+
+      .new-chat-btn {
+        width: calc(100% - 40px);
+        margin: 20px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius-md);
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+        font-size: 15px;
+        box-shadow: 0 4px 12px rgba(16, 163, 127, 0.3);
+      }
+
+      .new-chat-btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 163, 127, 0.4);
+      }
+
+      .history-section {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0 20px;
+      }
+
+      .section-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 20px 0 12px;
+        padding-left: 12px;
+      }
+
+      .history-item {
+        padding: 14px 16px;
+        border-radius: var(--radius-md);
+        margin-bottom: 6px;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-secondary);
+        font-size: 14px;
+        border: 1px solid transparent;
+      }
+
+      .history-item:hover {
+        background: var(--hover-color);
+        border-color: var(--border-color);
+      }
+
+      .history-item.active {
+        background: var(--primary-light);
+        border-color: var(--primary);
+        color: var(--text-primary);
+      }
+
+      .history-item i {
+        font-size: 16px;
+        width: 20px;
+        text-align: center;
+      }
+
+      .sidebar-footer {
+        padding: 20px;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: var(--transition);
+        background: var(--card-bg);
+      }
+
+      .user-profile:hover {
+        background: var(--hover-color);
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: white;
+      }
+
+      .user-info {
+        flex: 1;
+      }
+
+      .user-name {
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .user-status {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        background: var(--main-bg);
+      }
+
+      .chat-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        background: var(--main-bg);
+      }
+
+      .welcome-container {
+        text-align: center;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 80px 24px 40px;
+      }
+
+      .welcome-title {
+        font-size: 48px;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+
+      .welcome-subtitle {
+        color: var(--text-secondary);
+        font-size: 20px;
+        margin-bottom: 48px;
+        font-weight: 400;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        width: 100%;
+        max-width: 800px;
+      }
+
+      .feature-card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 28px 24px;
+        text-align: center;
+        transition: var(--transition);
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(10px);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--primary);
+        box-shadow: var(--shadow);
+      }
+
+      .feature-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-lg);
+        background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 28px;
+        color: white;
+        box-shadow: 0 8px 24px rgba(16, 163, 127, 0.3);
+      }
+
+      .feature-card h3 {
+        font-size: 18px;
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
+
+      .feature-card p {
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+
+      /* Messages */
+      .message {
+        display: flex;
+        padding: 28px 24px;
+        max-width: 800px;
+        margin: 0 auto;
+        width: 100%;
+        animation: fadeInUp 0.4s ease-out;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .message:last-child {
+        border-bottom: none;
+      }
+
+      .message.user {
+        background: var(--message-user-bg);
+      }
+
+      .message.assistant {
+        background: var(--message-ai-bg);
+      }
+
+      .message-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-right: 20px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .user-avatar {
+        background: linear-gradient(135deg, var(--primary) 0%, #6ee7b7 100%);
+        color: white;
+      }
+
+      .assistant-avatar {
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        color: white;
+      }
+
+      .message-content {
+        flex: 1;
+      }
+
+      .message-content p {
+        line-height: 1.7;
+        white-space: pre-wrap;
+        font-size: 15px;
+      }
+
+      .message-time {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* Input Container */
+      .input-container {
+        padding: 24px;
+        border-top: 1px solid var(--border-color);
+        background: var(--main-bg);
+      }
+
+      .input-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+        box-shadow: var(--shadow);
+      }
+
+      .input-wrapper:focus-within {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.2);
+      }
+
+      .message-input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-radius: var(--radius-lg);
+        padding: 20px 60px 20px 24px;
+        color: var(--text-primary);
+        font-size: 16px;
+        resize: none;
+        min-height: 60px;
+        max-height: 200px;
+        transition: var(--transition);
+        font-family: inherit;
+        line-height: 1.5;
+      }
+
+      .message-input:focus {
+        outline: none;
+      }
+
+      .message-input::placeholder {
+        color: var(--text-muted);
+      }
+
+      .send-button {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius-md);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 4px 12px rgba(16, 163, 127, 0.3);
+      }
+
+      .send-button:hover {
+        background: var(--primary-dark);
+        transform: scale(1.05);
+      }
+
+      .send-button:disabled {
+        background: var(--border-color);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: flex;
+        }
+
+        .sidebar {
+          position: fixed;
+          z-index: 1000;
+          transform: translateX(-100%);
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+
+        .welcome-title {
+          font-size: 36px;
+        }
+
+        .welcome-subtitle {
+          font-size: 18px;
+        }
+
+        .message {
+          padding: 20px 16px;
+        }
+
+        .input-container {
+          padding: 16px;
+        }
+      }
+
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Loading animation */
+      .typing-indicator {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        background: var(--card-bg);
+        border-radius: 20px;
+        width: fit-content;
+        margin-top: 12px;
+        border: 1px solid var(--border-color);
+      }
+
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+        background-color: var(--primary);
+        border-radius: 50%;
+        margin: 0 3px;
+        animation: typing 1.4s infinite ease-in-out;
+      }
+
+      .typing-dot:nth-child(1) {
+        animation-delay: 0s;
+      }
+
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes typing {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+        }
+        30% {
+          transform: translateY(-5px);
+        }
+      }
+
+      /* Enhanced text formatting */
+      .message-content strong {
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      .message-content em {
+        color: var(--text-secondary);
+        font-style: italic;
+      }
+
+      .message-content ul,
+      .message-content ol {
+        margin: 12px 0;
+        padding-left: 24px;
+      }
+
+      .message-content li {
+        margin-bottom: 6px;
+      }
+
+      .message-content code {
+        background: var(--card-bg);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Monaco", "Menlo", monospace;
+        font-size: 14px;
+        border: 1px solid var(--border-color);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Mobile menu toggle -->
+    <button class="menu-toggle">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <span>PitchCraft</span>
+        </div>
+      </div>
+
+      <button class="new-chat-btn">
+        <i class="fas fa-plus"></i> New Pitch Session
+      </button>
+
+      <div class="history-section">
+        <div class="section-label">Recent</div>
+        <div class="history-item active">
+          <i class="fas fa-comment"></i>
+          <span>EdTech Learning Platform</span>
+        </div>
+        <div class="history-item">
+          <i class="fas fa-comment"></i>
+          <span>Health & Fitness Mobile App</span>
+        </div>
+        <div class="history-item">
+          <i class="fas fa-comment"></i>
+          <span>Sustainable Fashion Marketplace</span>
+        </div>
+
+        <div class="section-label">Yesterday</div>
+        <div class="history-item">
+          <i class="fas fa-comment"></i>
+          <span>Food Delivery Service</span>
+        </div>
+        <div class="history-item">
+          <i class="fas fa-comment"></i>
+          <span>FinTech Investment Platform</span>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-info">
+            <div class="user-name">Alex Johnson</div>
+            <div class="user-status">Founder</div>
+          </div>
+          <i class="fas fa-ellipsis-h" style="color: var(--text-muted)"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="chat-container">
+        <!-- Welcome message when no conversation is selected -->
+        <div class="welcome-container">
+          <h1 class="welcome-title">PitchCraft AI</h1>
+          <p class="welcome-subtitle">
+            Transform your startup vision into compelling investor pitches
+          </p>
+
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-lightbulb"></i>
+              </div>
+              <h3>Creative Names</h3>
+              <p>Generate unique and memorable startup names that stand out</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-quote-right"></i>
+              </div>
+              <h3>Powerful Taglines</h3>
+              <p>Craft compelling taglines that capture your brand essence</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-elevator"></i>
+              </div>
+              <h3>Elevator Pitches</h3>
+              <p>Create concise 30-second pitches that grab attention</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-bullseye"></i>
+              </div>
+              <h3>Audience Analysis</h3>
+              <p>Identify and understand your target customer segments</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conversation area -->
+        <div id="conversation" style="display: none"></div>
+      </div>
+
+      <div class="input-container">
+        <div class="input-wrapper">
+          <textarea
+            class="message-input"
+            placeholder="Describe your startup idea or ask for help with your pitch..."
+            rows="1"
+          ></textarea>
+          <button class="send-button">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Enhanced JavaScript with better functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const sidebar = document.querySelector(".sidebar");
+        const messageInput = document.querySelector(".message-input");
+        const sendButton = document.querySelector(".send-button");
+        const conversation = document.getElementById("conversation");
+        const welcomeContainer = document.querySelector(".welcome-container");
+        const newChatBtn = document.querySelector(".new-chat-btn");
+        const historyItems = document.querySelectorAll(".history-item");
+
+        // Mobile menu toggle
+        menuToggle.addEventListener("click", function () {
+          sidebar.classList.toggle("open");
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener("click", function (e) {
+          if (
+            window.innerWidth <= 768 &&
+            !sidebar.contains(e.target) &&
+            !menuToggle.contains(e.target) &&
+            sidebar.classList.contains("open")
+          ) {
+            sidebar.classList.remove("open");
+          }
+        });
+
+        // Auto-resize textarea
+        messageInput.addEventListener("input", function () {
+          this.style.height = "auto";
+          this.style.height = this.scrollHeight + "px";
+        });
+
+        // Send message functionality
+        sendButton.addEventListener("click", sendMessage);
+        messageInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+          }
+        });
+
+        // History item click
+        historyItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            // Remove active class from all items
+            historyItems.forEach((i) => i.classList.remove("active"));
+            // Add active class to clicked item
+            this.classList.add("active");
+
+            // Hide welcome and show conversation
+            welcomeContainer.style.display = "none";
+            conversation.style.display = "block";
+
+            // Clear existing conversation
+            conversation.innerHTML = "";
+
+            // Add sample conversation
+            const title = this.querySelector("span").textContent;
+            addMessage(
+              `I'd like to refine the pitch for my ${title}. Can you help me improve it?`,
+              "user"
+            );
+
+            // Simulate AI response
+            setTimeout(() => {
+              addMessage(
+                `Absolutely! Let's work on enhancing your ${title} pitch. I can help you with the problem statement, solution, target market analysis, or competitive positioning. Which aspect would you like to focus on first?`,
+                "assistant"
+              );
+            }, 800);
+
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+              sidebar.classList.remove("open");
+            }
+          });
+        });
+
+        // New chat button
+        newChatBtn.addEventListener("click", function () {
+          // Remove active class from all history items
+          historyItems.forEach((i) => i.classList.remove("active"));
+          // Show welcome message
+          welcomeContainer.style.display = "block";
+          conversation.style.display = "none";
+          conversation.innerHTML = "";
+
+          // Close sidebar on mobile
+          if (window.innerWidth <= 768) {
+            sidebar.classList.remove("open");
+          }
+        });
+
+        function sendMessage() {
+          const message = messageInput.value.trim();
+          if (message === "") return;
+
+          // Hide welcome message and show conversation
+          if (welcomeContainer.style.display !== "none") {
+            welcomeContainer.style.display = "none";
+            conversation.style.display = "block";
+          }
+
+          // Add user message to conversation
+          addMessage(message, "user");
+
+          // Clear input
+          messageInput.value = "";
+          messageInput.style.height = "auto";
+
+          // Disable send button while processing
+          sendButton.disabled = true;
+
+          // Show typing indicator
+          const typingIndicator = document.createElement("div");
+          typingIndicator.className = "message assistant";
+          typingIndicator.innerHTML = `
+            <div class="message-avatar assistant-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-content">
+              <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+              </div>
+            </div>
+          `;
+          conversation.appendChild(typingIndicator);
+          conversation.scrollTop = conversation.scrollHeight;
+
+          // Simulate API response (replace with your actual API call)
+          setTimeout(() => {
+            // Remove typing indicator
+            conversation.removeChild(typingIndicator);
+
+            // Generate AI response based on user input
+            const aiResponse = generateAIResponse(message);
+
+            // Add AI response to conversation
+            addMessage(aiResponse, "assistant");
+
+            // Re-enable send button
+            sendButton.disabled = false;
+          }, 1500);
+        }
+
+        function addMessage(content, sender) {
+          const messageDiv = document.createElement("div");
+          messageDiv.className = `message ${sender}`;
+
+          const avatarDiv = document.createElement("div");
+          avatarDiv.className = `message-avatar ${
+            sender === "user" ? "user-avatar" : "assistant-avatar"
+          }`;
+          avatarDiv.innerHTML =
+            sender === "user"
+              ? '<i class="fas fa-user"></i>'
+              : '<i class="fas fa-robot"></i>';
+
+          const contentDiv = document.createElement("div");
+          contentDiv.className = "message-content";
+
+          // Format response with enhanced styling
+          const formattedContent = content
+            .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+            .replace(/\*(.*?)\*/g, "<em>$1</em>")
+            .replace(/`(.*?)`/g, "<code>$1</code>")
+            .replace(/# (.*?)(?=\n|$)/g, "<h4>$1</h4>")
+            .replace(/- (.*?)(?=\n|$)/g, "<li>$1</li>")
+            .replace(/(\d+\. .*?(?=\n|$))/g, "<li>$1</li>");
+
+          // Check if content has list items
+          if (formattedContent.includes("<li>")) {
+            contentDiv.innerHTML = `<p>${formattedContent.replace(
+              /(<li>.*?<\/li>)/g,
+              "<ul>$1</ul>"
+            )}</p>`;
+          } else {
+            contentDiv.innerHTML = `<p>${formattedContent}</p>`;
+          }
+
+          // Add timestamp
+          const timeDiv = document.createElement("div");
+          timeDiv.className = "message-time";
+          timeDiv.innerHTML = `<i class="far fa-clock"></i> ${new Date().toLocaleTimeString(
+            [],
+            { hour: "2-digit", minute: "2-digit" }
+          )}`;
+          contentDiv.appendChild(timeDiv);
+
+          messageDiv.appendChild(avatarDiv);
+          messageDiv.appendChild(contentDiv);
+          conversation.appendChild(messageDiv);
+
+          // Scroll to bottom
+          conversation.scrollTop = conversation.scrollHeight;
+        }
+
+        function generateAIResponse(userMessage) {
+          // Simple response generation based on keywords
+          if (userMessage.toLowerCase().includes("name")) {
+            return `Based on your idea, here are some startup name suggestions:
+
+**InnovateLearn** - Combines innovation with learning
+**EduSpark** - Suggests igniting educational passion
+**MindCraft** - Implies skill-building and creativity
+**SkillSync** - Indicates personalized learning paths
+
+Which direction resonates most with your vision?`;
+          } else if (userMessage.toLowerCase().includes("tagline")) {
+            return `Here are some compelling taglines for your startup:
+
+**"Where Curiosity Meets Mastery"** - Focuses on the learning journey
+**"Unlock Your Potential"** - Empowering and aspirational
+**"Learn Smarter, Not Harder"** - Highlights efficiency benefits
+**"The Future of Education, Today"** - Positions you as innovative
+
+Would you like me to refine any of these or create more options?`;
+          } else if (userMessage.toLowerCase().includes("pitch")) {
+            return `Here's a draft elevator pitch for your startup:
+
+"We're building an adaptive learning platform that personalizes educational content based on each student's unique learning style and pace. Our AI-powered system increases engagement and learning outcomes by 40% compared to traditional one-size-fits-all approaches."
+
+**Key elements included:**
+- Clear problem statement
+- Your unique solution
+- Measurable benefit
+- Differentiation from existing options
+
+Would you like to refine any part of this pitch?`;
+          } else {
+            return `I understand you're looking for help with your startup pitch. I can assist you with:
+
+• **Startup naming** - Creative, memorable names
+• **Tagline creation** - Compelling brand statements  
+• **Elevator pitches** - 30-second explanations
+• **Target audience** - Customer identification
+• **Problem statements** - Clear pain points
+• **Solution framing** - Your unique value proposition
+
+What specific aspect would you like to work on first?`;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

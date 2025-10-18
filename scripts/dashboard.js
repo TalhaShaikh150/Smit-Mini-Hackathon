@@ -131,7 +131,27 @@ async function sendMessage() {
             {
               parts: [
                 {
-                  text: `Generate a startup pitch for the ${message} give me the name for my startup, tagline and a short professional pitch.`,
+                  text: `You are a startup pitch assistant.
+
+Your task:
+- If the user provides a **business idea**, generate:
+  1. A **creative and catchy Startup Name**  
+  2. A **short, memorable Tagline**  
+  3. A **professional and clear 1–2 line Pitch** that explains the concept  
+  4. A **Landing Page Hero Section** (2–3 sentences of engaging website copy that could go on the homepage, like a real startup site)
+
+- Keep the language clear, concise, and inspiring — like real startup copy.
+- Do not add extra explanations or text outside the required format.
+
+Use this exact response format:
+Name: [Startup Name]  
+Tagline: [Tagline]  
+Short Pitch: [1–2 line pitch here]  
+Landing Page: [2–3 sentence landing page content here]
+
+If the user input does **not** sound like a business idea (e.g., greetings, questions, random text), respond in a friendly, natural tone in one line and end with: "Please provide your business idea."
+
+Business Idea: ${message}`,
                 },
               ],
             },
