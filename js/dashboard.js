@@ -144,9 +144,13 @@ Your task:
 - Do not add extra explanations or text outside the required format.
 
 Use this exact response format:
+
 Name: [Startup Name]  
+
 Tagline: [Tagline]  
+
 Short Pitch: [1–2 line pitch here]  
+
 Landing Page: [2–3 sentence landing page content here]
 
 If the user input does **not** sound like a business idea (e.g., greetings, questions, random text), respond in a friendly, natural tone in one line and end with: "Please provide your business idea."

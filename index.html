@@ -3,59 +3,294 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="styles/index.css" />
-    <link rel="stylesheet" href="styles/global.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>PitchCraft - Tumhara AI Startup Partner</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/index.css" />
   </head>
   <body>
-    <div class="container">
-      <!-- Login Form -->
-      <div id="login-form" class="form-container">
-        <h2>Login to Your Account</h2>
-        <form id="login">
-          <div class="form-group">
-            <label for="login-email">Email</label>
-            <input type="email" id="login-email" required />
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <div class="logo-icon">PC</div>
+            <div class="logo-text">PitchCraft</div>
           </div>
-          <div class="form-group">
-            <label for="login-password">Password</label>
-            <input type="password" id="login-password" required />
-          </div>
-          <button type="submit" class="btn">Login</button>
-        </form>
-        <div class="switch-form">
-          Don't have an account? <a id="show-signup">Sign Up</a>
-        </div>
-      </div>
 
-      <!-- Sign Up Form -->
-      <div id="signup-form" class="form-container hidden">
-        <h2>Create an Account</h2>
-        <form id="signup">
-          <div class="form-group">
-            <label for="signup-name">Full Name</label>
-            <input type="text" id="signup-name" required />
+          <nav>
+            <ul>
+              <li>
+                <a href="#"><i class="fas fa-home"></i> Home</a>
+              </li>
+              <li>
+                <a href="#how-it-works"
+                  ><i class="fas fa-play-circle"></i> How It Works</a
+                >
+              </li>
+              <li>
+                <a href="#"><i class="fas fa-star"></i> Examples</a>
+              </li>
+            </ul>
+          </nav>
+          <div class="auth-buttons">
+            <a href="signup.html"
+              ><button class="btn btn-primary">Sign Up Free</button></a
+            >
           </div>
-          <div class="form-group">
-            <label for="signup-email">Email</label>
-            <input type="email" id="signup-email" required />
-          </div>
-          <div class="form-group">
-            <label for="signup-password">Password</label>
-            <input type="password" id="signup-password" required />
-          </div>
-          <div class="form-group">
-            <label for="signup-confirm-password">Confirm Password</label>
-            <input type="password" id="signup-confirm-password" required />
-          </div>
-          <button type="submit" class="btn">Sign Up</button>
-        </form>
-        <div class="switch-form">
-          Already have an account? <a id="show-login">Login</a>
         </div>
       </div>
-    </div>
-    <script src="scripts/index.js" type="module"></script>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1>Your AI Startup Partner</h1>
+        <p>
+          Transform your startup idea into a compelling pitch in minutes with
+          our AI-powered platform. Available in both English and Roman Urdu.
+        </p>
+
+        <div class="hero-buttons">
+          <button
+            class="btn btn-primary"
+            style="padding: 15px 30px; font-size: 16px"
+          >
+            <i class="fas fa-bolt"></i> Generate Your Pitch
+          </button>
+          <button
+            class="btn btn-outline"
+            style="padding: 15px 30px; font-size: 16px"
+          >
+            <i class="fas fa-play-circle"></i> Watch Demo
+          </button>
+        </div>
+
+        <div class="hero-image">
+          <!-- This would be an image in a real implementation -->
+          <div
+            style="
+              background: linear-gradient(135deg, #4f46e5 0%, #10b981 100%);
+              height: 400px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-size: 1.5rem;
+            "
+          >
+            PitchCraft Dashboard Preview
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <div class="container">
+        <div class="section-title">
+          <h2>Powerful Features</h2>
+          <p>
+            Everything you need to create a compelling startup pitch that
+            impresses investors
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <h3>Creative Name Generation</h3>
+            <p>
+              AI-powered startup name suggestions that are catchy, relevant and
+              brandable.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-quote-right"></i>
+            </div>
+            <h3>Tagline Creation</h3>
+            <p>
+              Memorable taglines that capture the essence of your startup in
+              just a few words.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-elevator"></i>
+            </div>
+            <h3>Elevator Pitches</h3>
+            <p>
+              Concise and compelling elevator pitches that explain your idea in
+              30 seconds or less.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Target Audience</h3>
+            <p>
+              Identify and define your ideal customer profile and target market
+              segments.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-palette"></i>
+            </div>
+            <h3>Branding Suggestions</h3>
+            <p>
+              Get color palette recommendations and logo concepts that match
+              your startup vision.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-file-export"></i>
+            </div>
+            <h3>Export & Share</h3>
+            <p>
+              Export your pitch as PDF or share directly with investors and team
+              members.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section-title">
+          <h2>How PitchCraft Works</h2>
+          <p>Create your perfect startup pitch in just 4 simple steps</p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Describe Your Idea</h3>
+            <p>Tell us about your startup concept in simple words</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>AI Generation</h3>
+            <p>Our AI analyzes your idea and creates pitch components</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Customize & Refine</h3>
+            <p>Edit and personalize the generated content</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <h3>Export & Share</h3>
+            <p>Download your pitch or share with investors</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+      <div class="container">
+        <h2>Ready to Transform Your Startup Idea?</h2>
+        <p>
+          Join thousands of founders who have used PitchCraft to create
+          compelling pitches that secured funding
+        </p>
+
+        <div class="cta-buttons">
+          <button
+            class="btn btn-light"
+            style="padding: 15px 30px; font-size: 16px"
+          >
+            <i class="fas fa-rocket"></i> Start For Free
+          </button>
+          <button
+            class="btn btn-outline"
+            style="
+              padding: 15px 30px;
+              font-size: 16px;
+              border-color: white;
+              color: white;
+            "
+          >
+            <i class="fas fa-calendar"></i> Book Demo
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-column">
+            <h3>PitchCraft</h3>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Press</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Product</h3>
+            <ul>
+              <li><a href="#">Features</a></li>
+              <li><a href="#">Pricing</a></li>
+              <li><a href="#">Examples</a></li>
+              <li><a href="#">Updates</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Resources</h3>
+            <ul>
+              <li><a href="#">Documentation</a></li>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Community</a></li>
+              <li><a href="#">Partners</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Legal</h3>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+              <li><a href="#">Disclaimer</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="copyright">
+          <p>
+            &copy; 2023 PitchCraft. All rights reserved. | AI-generated content
+            is for idea generation only — not final business or legal advice.
+          </p>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
