@@ -29,19 +29,23 @@ export async function loginUser(email, password) {
     password,
   });
 
-  if (data) {
-    return data;
-  } else {
+  if (error) {
+    throw error;
+
     return null;
+  } else {
+    return data;
   }
 }
 
 export async function checkAuth() {
-  const { data, error } = await supabase.auth.getSession();
+  const { data, error } = await client.auth.getSession();
 
-  if (data) {
-    return data;
-  } else {
+  if (error) {
+    throw error;
+
     return null;
+  } else {
+    return data;
   }
 }

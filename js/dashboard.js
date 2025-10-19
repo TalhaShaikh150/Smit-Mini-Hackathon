@@ -1,3 +1,15 @@
+import { checkAuth } from "../backend/backend.js";
+
+async function confirmAuthentication() {
+  const data = await checkAuth();
+
+  if (data.session == null) {
+    window.location.href = "signup.html";
+  }
+}
+
+confirmAuthentication();
+
 // DOM Elements
 const menuToggle = document.querySelector(".menu-toggle");
 const sidebar = document.querySelector(".sidebar");
@@ -190,6 +202,21 @@ function addMessage(content, sender) {
     contentDiv.innerHTML = `<p>${formattedContent}</p>`;
   }
 
+  document.getElementById("download-pdf").addEventListener("click", () => {
+    const { jsPDF } = window.jspdf;
+
+    // Create a new PDF document
+    const doc = new jsPDF();
+
+    // Get text from textarea
+    const text = aiResponse;
+
+    // Add text to PDF
+    doc.text(text, 10, 10);
+
+    // Save the PDF
+    doc.save("text-file.pdf");
+  });
   messageDiv.appendChild(avatarDiv);
   messageDiv.appendChild(contentDiv);
   conversation.appendChild(messageDiv);
