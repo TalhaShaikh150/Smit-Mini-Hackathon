@@ -4,21 +4,27 @@ const supabaseKey =
 
 export const client = supabase.createClient(supabaseUrl, supabaseKey);
 
-export async function registerUser(email, password) {
-  const { data, error } = await supabase.auth.signUp({
+export async function registerUser(fullName, email, password) {
+  const { data, error } = await client.auth.signUp({
     email,
     password,
+    options: {
+      data: {
+        displayName: fullName,
+      },
+    },
   });
 
-  if (data) {
-    return data;
-  } else {
+  if (error) {
+    throw error;
     return null;
+  } else {
+    return data;
   }
 }
 
 export async function loginUser(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await client.auth.signInWithPassword({
     email,
     password,
   });
