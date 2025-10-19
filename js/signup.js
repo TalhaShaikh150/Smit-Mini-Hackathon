@@ -13,18 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginPasswordEl = document.getElementById("login-password");
 
   // -------------------------
-  // TOAST NOTIFICATION
-  // -------------------------
-  function showToast(message, type = "success") {
-    const container = document.getElementById("toast-container");
-    const toast = document.createElement("div");
-    toast.className = `toast ${type}`;
-    toast.innerHTML = `${type === "success" ? "✅" : "❌"} ${message}`;
-    container.appendChild(toast);
-    setTimeout(() => toast.remove(), 4000);
-  }
-
-  // -------------------------
   // SIGNUP
   // -------------------------
   async function signUpUser() {
@@ -33,18 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = passwordEl.value.trim();
 
     if (!fullName || !email || !password) {
-      showToast("Please fill all fields", "error");
+      alert("Please fill all fields", "error");
       return;
     }
 
     const result = await registerUser(fullName, email, password);
 
     if (result.user) {
-      showToast("Account created successfully!", "success");
+      alert("Account created successfully!", "success");
       signupForm.reset();
       showLogin.click(); // Switch to login form
     } else if (result.error) {
-      showToast(result.error.message, "error");
+      alert(result.error.message, "error");
     }
   }
 
@@ -61,19 +49,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = loginPasswordEl.value.trim();
 
     if (!email || !password) {
-      showToast("Please fill all fields", "error");
+      alert("Please fill all fields", "error");
       return;
     }
 
     const result = await loginUser(email, password);
 
     if (result.user) {
-      showToast("Login successful!", "success");
+      alert("Login successful!", "success");
       setTimeout(() => {
         window.location.href = "dashboard.html";
       }, 1000);
     } else if (result.error) {
-      showToast(result.error.message, "error");
+      alert(result.error.message, "error");
     }
   }
 
