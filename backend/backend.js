@@ -4,48 +4,73 @@ const supabaseKey =
 
 export const client = supabase.createClient(supabaseUrl, supabaseKey);
 
-export async function registerUser(fullName, email, password) {
+const errorMessage = document.querySelector(".error-message");
+const statusMessage = document.querySelector(".status");
+const signInBtn = document.getElementById("show-login");
+//SignUp Form
+//Login Form
+
+function addError() {
+  errorMessage.classList.remove("hide");
+  setTimeout(() => {
+    errorMessage.classList.add("hide");
+  }, 2400);
+}
+
+function showStatus() {
+  statusMessage.classList.remove("hide");
+  statusMessage.innerHTML = "Account Created Sucessfully";
+
+  setTimeout(() => {
+    statusMessage.classList.add("hide");
+    statusMessage.innerHTML = "";
+  }, 2000);
+}
+
+export async function registerUser(name, email, password) {
   const { data, error } = await client.auth.signUp({
     email,
     password,
     options: {
       data: {
-        displayName: fullName,
+        displayName: name,
       },
     },
   });
+  if (data.user == null) {
+    addError();
+  } else {
+    statusMessage.classList.remove("hide");
+    statusMessage.innerHTML = "Account Created Sucessfully";
+    setTimeout(() => {
+      statusMessage.classList.add("hide");
+      statusMessage.innerHTML = "";
+      signInBtn.click();
+    }, 1000);
+  }
 
   if (error) {
-    throw error;
-    return null;
-  } else {
-    return data;
+    if (error.message) {
+      statusMessage.classList.add("hide");
+
+      addError();
+      errorMessage.innerHTML = `${error.message}`;
+      return;
+    }
   }
+  return data;
 }
 
-export async function loginUser(email, password) {
-  const { data, error } = await client.auth.signInWithPassword({
-    email,
-    password,
-  });
 
-  if (error) {
-    throw error;
 
-    return null;
-  } else {
-    return data;
-  }
-}
+// export async function checkAuth() {
+//   const { data, error } = await client.auth.getSession();
 
-export async function checkAuth() {
-  const { data, error } = await client.auth.getSession();
+//   if (error) {
+//     throw error;
 
-  if (error) {
-    throw error;
-
-    return null;
-  } else {
-    return data;
-  }
-}
+//     return null;
+//   } else {
+//     return data;
+//   }
+// }
