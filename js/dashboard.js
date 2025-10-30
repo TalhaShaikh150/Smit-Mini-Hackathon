@@ -1,12 +1,12 @@
 import { checkAuth } from "../backend/backend.js";
 
-// async function confirmAuthentication() {
-//   const data = await checkAuth();
+async function confirmAuthentication() {
+  const data = await checkAuth();
 
-//   if (data.session == null) {
-//     window.location.href = "signup.html";
-//   }
-// }
+  if (data.session == null) {
+    window.location.href = "auth.html";
+  }
+}
 
 confirmAuthentication();
 

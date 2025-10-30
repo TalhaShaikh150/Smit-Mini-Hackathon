@@ -1,8 +1,9 @@
-import { registerUser } from "../backend/backend.js";
+import { registerUser, loginUser } from "../backend/backend.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.getElementById("login-form");
+  const loginForm = document.getElementById("login");
   const signupFormContainer = document.getElementById("signup-form");
+  const loginFormContainer = document.getElementById("login-form");
   const showSignup = document.getElementById("show-signup");
   const showLogin = document.getElementById("show-login");
 
@@ -12,20 +13,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const signupForm = document.getElementById("signup");
   //Status Messages
-
+  const loginEmailEl = document.getElementById("login-email");
+  const loginPasswordEl = document.getElementById("login-password");
   // -------------------------
   // FORM SWITCHING
   // -------------------------
   showSignup.addEventListener("click", (e) => {
     e.preventDefault();
-    loginForm.classList.add("hidden");
+    loginFormContainer.classList.add("hidden");
     signupFormContainer.classList.remove("hidden");
   });
 
   showLogin.addEventListener("click", (e) => {
     e.preventDefault();
     signupFormContainer.classList.add("hidden");
-    loginForm.classList.remove("hidden");
+    loginFormContainer.classList.remove("hidden");
   });
 
   // -------------------------
@@ -45,4 +47,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   // LOGIN
   // -------------------------
+
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = loginEmailEl.value;
+    const password = loginPasswordEl.value;
+
+    const result = await loginUser(email, password);
+    if (result) {
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1200);
+    }
+  });
 });
